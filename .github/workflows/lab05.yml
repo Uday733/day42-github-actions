@@ -1,0 +1,33 @@
+name: Lab 05 - Job Dependencies and Outputs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/lab05.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.generate_version.outputs.version }}
+    steps:
+      - name: Generate build version
+        id: generate_version
+        run: |
+          version="1.0.${GITHUB_RUN_NUMBER}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Built version $version"
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the build version
+        env:
+          BUILD_VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          test -n "$BUILD_VERSION"
+          echo "Testing build version $BUILD_VERSION"
