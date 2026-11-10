@@ -1,0 +1,30 @@
+name: Lab 04 - Linux and Windows Runners
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/lab04.yml
+  workflow_dispatch:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Linux system information
+        run: |
+          uname -a
+          cat /etc/os-release
+          df -h /
+          free -h
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Show Windows boot time and uptime
+        shell: pwsh
+        run: |
+          $os = Get-CimInstance Win32_OperatingSystem
+          $os | Select-Object Caption, LastBootUpTime
+          Get-Uptime
