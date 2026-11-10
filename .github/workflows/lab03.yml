@@ -1,0 +1,30 @@
+name: Lab 03 - Multiple Jobs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/lab03.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        run: |
+          echo "Running the build job"
+          pwd
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: echo "Running the test job"
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Security
+        run: echo "Running the security job"
